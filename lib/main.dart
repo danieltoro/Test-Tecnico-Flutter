@@ -24,10 +24,10 @@ class _TodoListState extends State<TodoList> {
   final List<Task> _tasks = [];
 
   void _addTask(String taskName) {
-  setState(() {
-    _tasks.add(Task(name: taskName, isCompleted: false));
-  });
-}
+    setState(() {
+      _tasks.add(Task(name: taskName, isCompleted: false));
+    });
+  }
 
   void _removeTask(int index) {
     setState(() {
@@ -68,38 +68,48 @@ class _TodoListState extends State<TodoList> {
   }
 
   @override
-Widget build(BuildContext context) {
-  return Scaffold(
-    appBar: AppBar(
-      title: Text('Lista de Tareas'),
-    ),
-    body: ListView.builder(
-      itemCount: _tasks.length,
-      itemBuilder: (context, index) {
-        return ListTile(
-          title: Text(_tasks[index].name),
-          leading: Checkbox(
-            value: _tasks[index].isCompleted,
-            onChanged: (bool? value) {
-              setState(() {
-                _tasks[index].isCompleted = value ?? false;
-              });
-            },
-          ),
-          trailing: IconButton(
-            icon: Icon(Icons.delete),
-            onPressed: () => _removeTask(index),
-          ),
-        );
-      },
-    ),
-    floatingActionButton: FloatingActionButton(
-      onPressed: _showAddTaskDialog,
-      tooltip: 'Agregar Tarea',
-      child: Icon(Icons.add),
-    ),
-  );
-}
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Lista de Tareas'),
+      ),
+      body: ListView.builder(
+        itemCount: _tasks.length,
+        itemBuilder: (context, index) {
+          return Container(
+            color: _tasks[index].isCompleted ? Colors.green : Colors.transparent,
+            child: ListTile(
+              title: Text(
+                _tasks[index].name,
+                style: TextStyle(
+                  color: _tasks[index].isCompleted ? Colors.white : Colors.black,
+                  decoration: _tasks[index].isCompleted ? TextDecoration.lineThrough : TextDecoration.none,
+                  decorationColor: _tasks[index].isCompleted ? Colors.white : Colors.black,
+                ),
+              ),
+              leading: Checkbox(
+                value: _tasks[index].isCompleted,
+                onChanged: (bool? value) {
+                  setState(() {
+                    _tasks[index].isCompleted = value ?? false;
+                  });
+                },
+              ),
+              trailing: IconButton(
+                icon: Icon(Icons.delete),
+                onPressed: () => _removeTask(index),
+              ),
+            ),
+          );
+        },
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _showAddTaskDialog,
+        tooltip: 'Agregar Tarea',
+        child: Icon(Icons.add),
+      ),
+    );
+  }
 }
 
 class Task {
